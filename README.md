@@ -15,6 +15,7 @@ The objectives of the lab were to:
 * Permit only the management VLAN across the trunk.
 * Enable SSH version 2.
 * Disable Telnet access.
+* Disable HTTP and HTTPS management services.
 * Use local authentication for administrative access.
 * Restrict SSH access to the management subnet.
 * Shut down unused switch ports.
@@ -87,7 +88,7 @@ The switch management interfaces were placed in VLAN 99 instead of the default V
 
 This separates administrative traffic from ordinary client traffic and reduces exposure of the switch management plane.
 
-### SSH-only management
+### SSH-only remote management
 
 SSH version 2 was enabled on both switches.
 
@@ -99,6 +100,14 @@ transport input ssh
 ```
 
 The `transport input ssh` command prevents Telnet connections from being accepted.
+
+HTTP and HTTPS management services were also disabled:
+
+```text
+no ip http server
+no ip http secure-server
+```
+This reduced the number of enabled management services and limited remote network administration to SSH.
 
 ### Local authentication
 
@@ -136,6 +145,7 @@ Unused FastEthernet ports were:
 
 * Assigned to VLAN 999.
 * Given an unused-port description.
+* Configured as access ports.
 * Administratively shut down.
 
 Example:
@@ -143,6 +153,12 @@ Example:
 ```text
 interface range FastEthernet0/3 - 24
  description UNUSED_SHUTDOWN
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+
+interface range GigabitEthernet0/1 - 2
+ description UNUSED_PORTS
  switchport mode access
  switchport access vlan 999
  shutdown
@@ -183,31 +199,34 @@ The following configuration process was completed on both switches:
 12. Generated RSA keys.
 13. Enabled SSH version 2.
 14. Disabled Telnet on all VTY lines.
-15. Applied the `MGMT_ONLY` ACL to the VTY lines.
-16. Saved the running configuration.
+15. Disabled HTTP and HTTPS management services.
+16. Applied the `MGMT_ONLY` ACL to the VTY lines.
+17. Saved the running configuration.
 
 The complete example configurations are available in the `configs` directory.
 
 ## Verification and Test Results
 
-| Test                                               | Expected result        | Result |
-| -------------------------------------------------- | ---------------------- | ------ |
-| Ping SW1 from VLAN 99                              | Reachable              | Pass   |
-| Ping SW2 from VLAN 99                              | Reachable              | Pass   |
-| TCP port 23 on SW1                                 | Refused or unavailable | Pass   |
-| TCP port 23 on SW2                                 | Refused or unavailable | Pass   |
-| TCP port 22 on SW1                                 | Open                   | Pass   |
-| TCP port 22 on SW2                                 | Open                   | Pass   |
-| VLAN 99 SVI on SW1                                 | Up/up                  | Pass   |
-| VLAN 99 SVI on SW2                                 | Up/up                  | Pass   |
-| VLAN 99 across trunk                               | Active and forwarding  | Pass   |
-| SSH version 2                                      | Enabled                | Pass   |
-| VTY transport protocol                             | SSH only               | Pass   |
-| Local VTY authentication                           | Configured             | Pass   |
-| Management ACL                                     | Applied                | Pass   |
-| Unused switch ports                                | Administratively down  | Pass   |
-| Management reachability from VLAN 10               | Unreachable            | Pass   |
-| Management reachability after returning to VLAN 99 | Reachable              | Pass   |
+| Test                                               | Expected result           | Result |
+| -------------------------------------------------- | ------------------------- | ------ |
+| Ping SW1 from VLAN 99                              | Reachable                 | Pass   |
+| Ping SW2 from VLAN 99                              | Reachable                 | Pass   |
+| TCP port 23 on SW1                                 | Refused or unavailable    | Pass   |
+| TCP port 23 on SW2                                 | Refused or unavailable    | Pass   |
+| TCP port 22 on SW1                                 | Open                      | Pass   |
+| TCP port 22 on SW2                                 | Open                      | Pass   |
+| VLAN 99 SVI on SW1                                 | Up/up                     | Pass   |
+| VLAN 99 SVI on SW2                                 | Up/up                     | Pass   |
+| VLAN 99 across trunk                               | Active and forwarding     | Pass   |
+| SSH version 2                                      | Enabled                   | Pass   |
+| VTY transport protocol                             | SSH only                  | Pass   |
+| Local VTY authentication                           | Configured                | Pass   |
+| Management ACL                                     | Applied                   | Pass   |
+| HTTP management service                            | Disabled in configuration | Pass   |
+| HTTPS management service                           | Disabled in configuration | Pass   |
+| Unused switch ports                                | Administratively down     | Pass   |
+| Management reachability from VLAN 10               | Unreachable               | Pass   |
+| Management reachability after returning to VLAN 99 | Reachable                 | Pass   |
 
 ## VLAN Isolation Test
 
@@ -244,8 +263,9 @@ This lab demonstrates several principles that are also important in cloud securi
 * Reduced attack surface
 * Secure administrative protocols
 * Network segmentation
-* Explicit access control
+* Explicit network access control
 * Disabled unused services and interfaces
+* Secure configuration practices
 * Configuration verification
 
 In cloud environments, similar controls are implemented using private management networks, security groups, network access control lists, identity policies and restricted administrative endpoints.
@@ -287,6 +307,6 @@ Contains the network topology diagram.
 
 ## Conclusion
 
-The lab successfully hardened the management plane of two Cisco switches by separating management traffic, disabling Telnet, enabling SSH version 2, restricting administrative access, shutting down unused interfaces and verifying the resulting network behavior.
+The lab successfully hardened the management plane of two Cisco switches by separating management traffic, disabling Telnet, disabling HTTP and HTTPS management services, enabling SSH version 2, restricting administrative access, shutting down unused interfaces and verifying the resulting network behavior.
 
 The lab also identified a compatibility issue between legacy Cisco SSH algorithms and the security defaults used by modern OpenSSH clients.
