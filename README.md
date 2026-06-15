@@ -299,12 +299,6 @@ evidence/
 
 Contains terminal output and screenshots showing the verification results.
 
-```text
-diagrams/
-```
-
-Contains the network topology diagram.
-
 ## Conclusion
 
 The lab successfully hardened the management plane of two Cisco switches by separating management traffic, disabling Telnet, disabling HTTP and HTTPS management services, enabling SSH version 2, restricting administrative access, shutting down unused interfaces and verifying the resulting network behavior.
