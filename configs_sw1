@@ -1,0 +1,266 @@
+SW1#show running-config 
+Building configuration...
+
+Current configuration : 6023 bytes
+!
+! Last configuration change at 00:58:58 UTC Mon Mar 1 1993 by admin
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+no service password-encryption
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 16384 informational
+logging console warnings
+enable secret <REDACTED>
+!
+username admin privilege 15 secret <REDACTED>
+no aaa new-model
+system mtu routing 1500
+!         
+!         
+no ip domain-lookup
+ip domain-name lab.local
+!         
+!         
+crypto pki trustpoint TP-self-signed-1775743744
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1775743744
+ revocation-check none
+ rsakeypair TP-self-signed-1775743744
+!         
+!         
+crypto pki certificate chain TP-self-signed-1775743744
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31373735 37343337 3434301E 170D3933 30333031 30303031 
+  30385A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 37373537 
+  34333734 3430819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100B976 EE3DAAA8 36F9BA16 F673E866 581C8A35 1786F804 CA32759B 94C5B4C8 
+  5BE0F42B 5558A432 C097836B D293A15E A1A168C5 2D1F3A80 833E0B2B A13BC40A 
+  5E7D002C 6B08309D 02D63A99 352B3661 45F3DA6A A5ED7C2C C12BADFF 01769119 
+  992312C4 6415D0F1 CE2F9732 AE20B035 B7A42B0F 3F3FB9CA D4E205DC EC595AE6 
+  3C5F0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 141BD5EF FEF997AB BA83FDA2 3E6E9E4C D734648F 63301D06 
+  03551D0E 04160414 1BD5EFFE F997ABBA 83FDA23E 6E9E4CD7 34648F63 300D0609 
+  2A864886 F70D0101 05050003 81810019 2C94256B B54B1472 C1DD3810 87A01811 
+  F571E796 A1F48B66 2BEFCEE9 A8A04659 C555399D 39070D32 6D3307C2 49C62209 
+  46ED1783 B47F141E A2C635CA 4523F519 B43B2EA5 4A11C3E5 31D6E396 F049EC99 
+  8BC04B72 8812FED7 F189BA70 39E2B339 455E8287 71BBE419 1F56DC6F BDB0B36B 
+  07367C23 B57BEE53 FE9021F8 2040F2
+        quit
+!         
+!         
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+!         
+vlan internal allocation policy ascending
+!         
+ip ssh time-out 60
+ip ssh version 2
+!         
+!         
+!         
+!         
+interface FastEthernet0/1
+ description TRUNK_TO_SW2
+ switchport trunk allowed vlan 99
+ switchport mode trunk
+ switchport nonegotiate
+!         
+interface FastEthernet0/2
+ description MACBOOK_MGMT
+ switchport access vlan 99
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!         
+interface FastEthernet0/3
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/4
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/5
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/6
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/7
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/8
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/9
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/10
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/11
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/12
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/13
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/14
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/15
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/16
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/17
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/18
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/19
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/20
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/21
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/22
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/23
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface FastEthernet0/24
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface GigabitEthernet0/1
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface GigabitEthernet0/2
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ shutdown 
+!         
+interface Vlan1
+ no ip address
+ no ip route-cache
+!         
+interface Vlan99
+ description Management SVI
+ ip address 192.168.99.11 255.255.255.0
+ no ip route-cache
+!         
+no ip http server
+no ip http secure-server
+!         
+ip access-list standard MGMT_ONLY
+ permit 192.168.99.0 0.0.0.255
+ deny   any log
+!         
+banner motd ^CUnauthorized access prohibited.^C
+!         
+line con 0
+ login local
+line vty 0 4
+ access-class MGMT_ONLY in
+ exec-timeout 5 0
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 15
+ access-class MGMT_ONLY in
+ exec-timeout 5 0
+ logging synchronous
+ login local
+ transport input ssh
+!         
+end       
